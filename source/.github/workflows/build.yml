@@ -1,0 +1,30 @@
+name: Build GBA ROM
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install devkitPro
+        uses: devkitPro/ghdl@v1
+
+      - name: Install GBA toolchain
+        run: |
+          sudo dkp-pacman -Sy --noconfirm gba-dev
+
+      - name: Build ROM
+        run: |
+          make
+
+      - name: Upload GBA ROM
+        uses: actions/upload-artifact@v4
+        with:
+          name: IGGY-ABYSSAL
+          path: "*.gba"
